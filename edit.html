@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="A personal record of university semesters, experiences and study resources." />
+  <title>Edit site — Notes from NTU</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="site-data.js"></script>
+  <script defer src="site.js"></script>
+</head>
+<body data-page="edit">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site">
+  <header class="site-header">
+    <p class="site-title"><a href="index.html" data-site-title>Notes from NTU</a></p>
+    <nav class="primary-nav" aria-label="Main navigation">
+      <a href="index.html" data-nav="home">Home</a>
+      <div class="nav-dropdown">
+        <button type="button" id="semester-menu-button" aria-expanded="false" aria-controls="semester-menu">Semester reviews <span aria-hidden="true">▾</span></button>
+        <div class="dropdown-menu" id="semester-menu">
+              <a href="y1s1.html">Year 1, Semester 1</a>
+              <a href="y1s2.html">Year 1, Semester 2</a>
+              <a href="y2s1.html">Year 2, Semester 1</a>
+              <a href="y2s2.html">Year 2, Semester 2</a>
+              <a href="y3s1.html">Year 3, Semester 1</a>
+              <a href="y3s2.html">Year 3, Semester 2</a>
+              <a href="y4s1.html">Year 4, Semester 1</a>
+              <a href="y4s2.html">Year 4, Semester 2</a>
+        </div>
+      </div>
+      <a href="materials.html" data-nav="materials">Materials</a>
+      <a href="edit.html" class="nav-edit" data-nav="edit">Edit site</a>
+    </nav>
+  </header>
+  <div class="page-layout">
+    <main id="main">
+      <header class="entry-header"><h1>Edit your site</h1></header>
+      <p class="editor-intro">Write your semester reviews here. Changes are saved in this browser until you publish them.</p>
+      <div class="editor-tabs" role="tablist" aria-label="Editing sections">
+        <button type="button" data-tab="semester" class="is-current">Semester entry</button>
+        <button type="button" data-tab="materials">Materials</button>
+        <button type="button" data-tab="settings">Site details</button>
+        <button type="button" data-tab="publish">Publish / backup</button>
+      </div>
+      <p id="editor-status" role="status" aria-live="polite" class="editor-status" hidden></p>
+      <section data-panel="semester" class="editor-panel">
+        <form id="semester-form">
+          <label for="edit-semester">Which semester?</label>
+          <select id="edit-semester" name="semester"></select>
+          <label for="edit-date">Date of entry <span class="optional">(optional)</span></label>
+          <input type="date" id="edit-date" />
+          <label for="edit-courses">Courses taken</label>
+          <p class="form-help">Enter one course per line, e.g. PH1011 Physics (4 AU).</p>
+          <textarea id="edit-courses" rows="6" placeholder="PH1011 Physics (4 AU)&#10;..." spellcheck="false"></textarea>
+          <div class="field-row">
+            <div><label for="edit-au">Total AUs</label><input type="text" id="edit-au" inputmode="decimal" placeholder="e.g. 20" /></div>
+            <div><label for="edit-gpa">Semester GPA</label><input type="text" id="edit-gpa" inputmode="decimal" placeholder="e.g. 4.50" /></div>
+            <div><label for="edit-cgpa">Cumulative GPA</label><input type="text" id="edit-cgpa" inputmode="decimal" placeholder="e.g. 4.50" /></div>
+          </div>
+          <label for="edit-reflection">Your semester review</label>
+          <p class="form-help">Write normally, with a blank line between paragraphs. No formatting needed.</p>
+          <textarea id="edit-reflection" rows="12" placeholder="How did this semester go? What would you do differently?" ></textarea>
+          <label for="edit-screenshot">GPA / results screenshot <span class="optional">(optional)</span></label>
+          <p class="form-help">PNG, JPEG or WebP. Check that your screenshot does not reveal your matriculation number or other private information before publishing.</p>
+          <input type="file" accept="image/png,image/jpeg,image/webp" id="edit-screenshot" />
+          <div id="current-screenshot" class="current-upload" hidden></div>
+          <label class="check-label"><input type="checkbox" id="remove-screenshot" /> Remove existing screenshot</label>
+          <label for="edit-caption">Screenshot caption <span class="optional">(optional)</span></label>
+          <input type="text" id="edit-caption" placeholder="Semester results" />
+          <label for="edit-module-notes">Individual module reviews <span class="optional">(optional)</span></label>
+          <p class="form-help">Start a heading with <code>##</code>, e.g. <code>## PH1011 Physics</code>, followed by your thoughts. Blank lines separate paragraphs.</p>
+          <textarea id="edit-module-notes" rows="10" placeholder="## PH1011 Physics&#10;&#10;My thoughts on this module...&#10;&#10;## MA1001&#10;&#10;..."></textarea>
+          <div class="form-actions"><button type="submit" class="main-button">Save this semester</button><a id="view-entry" href="y1s1.html">View this entry</a></div>
+        </form>
+      </section>
+      <section data-panel="materials" class="editor-panel" hidden>
+        <h2>Materials and links</h2>
+        <p>Add a link to notes, a resource page, or a file. Uploaded files are included when you publish; for very large files, a Drive link is better.</p>
+        <div id="materials-admin-list" class="materials-admin-list"></div>
+        <form id="material-form">
+          <h3 id="material-form-title">Add a resource</h3>
+          <label for="mat-title">Title</label>
+          <input type="text" id="mat-title" required placeholder="e.g. Physics revision notes" />
+          <label for="mat-module">Module <span class="optional">(optional)</span></label>
+          <input type="text" id="mat-module" placeholder="e.g. PH1011" />
+          <label for="mat-semester">Semester</label>
+          <select id="mat-semester"><option value="general">General</option></select>
+          <label for="mat-url">Link <span class="optional">(optional if attaching a file)</span></label>
+          <input type="url" id="mat-url" placeholder="https://..." />
+          <label for="mat-file">Or attach a file <span class="optional">(optional)</span></label>
+          <p class="form-help">PDF, image, document or ZIP. Maximum 8 MB per file. Files published on your website are publicly downloadable.</p>
+          <input type="file" id="mat-file" />
+          <p id="mat-existing-file" class="form-help" hidden></p>
+          <label for="mat-note">Note <span class="optional">(optional)</span></label>
+          <textarea id="mat-note" rows="3" placeholder="Where it came from, what it is useful for, etc."></textarea>
+          <div class="form-actions"><button class="main-button" type="submit">Save resource</button><button class="text-button" type="button" id="mat-cancel">Cancel</button></div>
+        </form>
+      </section>
+      <section data-panel="settings" class="editor-panel" hidden>
+        <h2>Site details</h2>
+        <form id="settings-form">
+          <label for="site-name">Blog name</label>
+          <input id="site-name" type="text" maxlength="75" required />
+          <label for="site-intro">Home page introduction <span class="optional">(optional)</span></label>
+          <p class="form-help">A short paragraph about what you're keeping here.</p>
+          <textarea id="site-intro" rows="5"></textarea>
+          <div class="form-actions"><button type="submit" class="main-button">Save site details</button></div>
+        </form>
+      </section>
+      <section data-panel="publish" class="editor-panel" hidden>
+        <h2>Publish and backup</h2>
+        <p>This website does not have a server or an account system. Your edits stay in this browser until you download the updated site data.</p>
+        <ol class="publish-steps">
+          <li>Save your writing and screenshots using the editor.</li>
+          <li>Click <strong>Download updated site-data.js</strong> below.</li>
+          <li>In your GitHub Pages repository, replace the existing <code>site-data.js</code> with the downloaded file and commit the change.</li>
+          <li>The published website will then show your writing to anyone with the link.</li>
+        </ol>
+        <div class="publish-actions"><button type="button" class="main-button" id="export-data">Download updated site-data.js</button></div>
+        <h3>Restore a backup</h3>
+        <p>You can import a previously downloaded <code>site-data.js</code>. This will replace the drafts in this browser.</p>
+        <input type="file" id="import-data" accept=".js,.json,text/javascript,application/json" />
+        <h3>Go back to the published version</h3>
+        <p>If you've made unwanted local edits, you can discard them and reload what is in <code>site-data.js</code>.</p>
+        <button type="button" class="text-button" id="reset-data">Discard local drafts</button>
+      </section>
+    </main>
+    <aside class="sidebar" aria-label="Semester archive">
+      <h2>Semester archive</h2>
+          <section class="archive-year"><h3>Year 1</h3><ul>
+            <li><a href="y1s1.html">Semester 1</a></li>
+            <li><a href="y1s2.html">Semester 2</a></li>
+          </ul></section>
+          <section class="archive-year"><h3>Year 2</h3><ul>
+            <li><a href="y2s1.html">Semester 1</a></li>
+            <li><a href="y2s2.html">Semester 2</a></li>
+          </ul></section>
+          <section class="archive-year"><h3>Year 3</h3><ul>
+            <li><a href="y3s1.html">Semester 1</a></li>
+            <li><a href="y3s2.html">Semester 2</a></li>
+          </ul></section>
+          <section class="archive-year"><h3>Year 4</h3><ul>
+            <li><a href="y4s1.html">Semester 1</a></li>
+            <li><a href="y4s2.html">Semester 2</a></li>
+          </ul></section>
+      <div class="sidebar-extra"><a href="materials.html">Study materials</a></div>
+    </aside>
+  </div>
+</div>
+</body>
+</html>
