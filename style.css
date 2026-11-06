@@ -183,3 +183,7 @@ body[data-page="edit"] .page-layout { grid-template-columns: minmax(0,1fr) 192px
   .primary-nav > a, .nav-dropdown > button { padding: 12px 10px; }
   .site-title { font-size: 28px; }
 }
+/* Hide the editor link from visitors */
+.primary-nav .nav-edit {
+    display: none;
+}
